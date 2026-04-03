@@ -1,0 +1,15 @@
+[Unit]
+Description=Prometheus
+After=network-online.target
+
+[Service]
+User=prometheus
+ExecStart=/usr/local/bin/prometheus \
+--config.file=/etc/prometheus/prometheus.yml \
+--storage.tsdb.path=/var/lib/prometheus/ \
+--storage.tsdb.retention.time=15d \
+--web.enable-lifecycle
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

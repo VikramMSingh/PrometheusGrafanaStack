@@ -1,0 +1,110 @@
+    1  free -mh
+    2  sudo apt update && sudo apt upgrade -y
+    3  sudo apt install -y build-essential git vim curl wget htop
+    4  python
+    5  python3
+    6  sudo useradd --no-create-home --shell /bin/false prometheus
+    7  df -h
+    8  cd /tmp
+    9  wget https://github.com/prometheus/prometheus/releases/download/v2.54.1/prometheus-2.54.1.linux-amd64.tar.gz
+   10  tar xvf prometheus-2.54.1.linux-amd64.tar.gz 
+   11  cd prometheus-2.54.1.linux-amd64/
+   12  sudo cp prometheus promtool /usr/local/bin/
+   13  sudo chown prometheus:prometheus /usr/local/bin/prometheus 
+   14  sudo chown prometheus:prometheus /usr/local/bin/promtool
+   15  sudo mkdir -p /etc/prometheus /var/lib/prometheus
+   16  sudo cp -r consoles console_libraries /etc/prometheus/
+   17  sudo chown -R prometheus:prometheus /etc/prometheus /var/lib/prometheus
+   18  cd /tmp/
+   19  ls -ltr
+   20  rm -rf prometheus-2.54.1.linux-amd64.tar.gz 
+   21  cd /etc/prometheus/
+   22  ll
+   23  sudo vi prometheus.yml
+   24  sudo chown prometheus:prometheus /etc/prometheus/prometheus.yml
+   25  sudo tee /etc/systemd/system/prometheus.service << 'EOF'
+   26  [Unit]
+   27  Description=Prometheus
+   28  After=network-online.target
+   29  [Service]
+   30  User=prometheus
+   31  ExecStart=/usr/local/bin/prometheus \
+   32  --config.file=/etc/prometheus/prometheus.yml \
+   33  --storage.tsdb.path=/var/lib/prometheus/ \
+   34  --storage.tsdb.retention.time=15d \
+   35  --web.enable-lifecycle
+   36  Restart=always
+   37  [Install]
+   38  WantedBy=multi-user.target
+   39  EOF
+   40  cd /etc/systemd/
+   41  ls -ltr
+   42  cd system
+   43  ls -ltr
+   44  less prometheus.service 
+   45  cd /etc/prometheus/
+   46  vi prometheus.yml 
+   47  sudo vi prometheus.yml 
+   48  sudo systemctl daemon-reload
+   49  sudo systemctl enable prometheus
+   50  sudo systemctl start prometheus
+   51  sudo systemctl status prometheus
+   52  sudo vi prometheus.yml 
+   53  sudo systemctl status prometheus
+   54  sudo systemctl stop prometheus
+   55  sudo systemctl start prometheus
+   56  sudo systemctl status prometheus
+   57  sudo systemctl stop prometheus
+   58  cd /etc/systemd/system
+   59  ls -lte
+   60  ls -ltr
+   61  vi prometheus.service
+   62  sudo vi prometheus.service
+   63  cd /usr/local/bin/
+   64  ls -ltr
+   65  sudo journalctl -u prometheus -n 20 --no-pager
+   66  file /usr/local/bin/prometheus
+   67  uname -m
+   68  exit
+   69  wget https://github.com/prometheus/prometheus/releases/download/v2.54.1/prometheus-2.54.1.linux-arm64.tar.gz
+   70  ls -ltr
+   71  cd /tmp/
+   72  ls -ltr
+   73  rm -rf prometheus-2.54.1.linux-amd64/
+   74  cd ..
+   75  ls -ltr
+   76  exit
+   77  ls -ltr
+   78  mv prometheus-2.54.1.linux-arm64.tar.gz /tmp/
+   79  pwd
+   80  cd /tmp/
+   81  tar xvf prometheus-2.54.1.linux-arm64.tar.gz
+   82  cd prometheus-2.54.1.linux-arm64/
+   83  sudo cp prometheus promtool /usr/local/bin/
+   84  sudo chown prometheus:prometheus /usr/local/bin/prometheus /usr/local/bin/promtool
+   85  sudo journalctl -u prometheus -n 20 --no-pager
+   86  cd /usr/local/bin/
+   87  ls -ltr
+   88  sudo journalctl -u prometheus -n 20 --no-pager
+   89  sudo systemctl start prometheus
+   90  sudo systemctl status prometheus
+   91  curl http://localhost:9090/targets
+   92  curl http://localhost:9100/metrics
+   93  sudo useradd --no-create-home --shell /bin/false node_exporter
+   94  cd /tmp/
+   95  ls -ltr
+   96  rm prometheus-2.54.1.linux-arm64.tar.gz 
+   97  wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-arm64.tar.gz
+   98  tar xvf node_exporter-1.8.2.linux-arm64.tar.gz 
+   99  cd node_exporter-1.8.2.linux-arm64/
+  100  sudo cp node_exporter /usr/local/bin/
+  101  sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
+  102  cd /etc/systemd/system
+  103  sudo vi node_exporter.service
+  104  sudo systemctl daemon-reloas
+  105  sudo systemctl daemon-reload
+  106  sudo systemctl enable node_exporter
+  107  sudo systemctl start node_exporter
+  108  curl http://localhost:9100/metrics
+  109  free -m
+  110  history > /tmp/steps_for_node_prometheus_setup.txt
