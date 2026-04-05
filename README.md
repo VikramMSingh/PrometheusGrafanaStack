@@ -1,4 +1,3 @@
-cat > README.md << 'EOF'
 # Prometheus + Node Exporter — Native Install
 
 Observability stack installed natively via systemd. No Docker.
